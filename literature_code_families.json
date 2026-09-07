@@ -1,0 +1,373 @@
+{
+  "schema_version": "1.0",
+  "kind": "qldpc_literature_code_family_catalog",
+  "retrieved_on": "2026-08-29",
+  "purpose": "Reference-only literature map for phylogenetic search and seed prioritization.",
+  "compliance": {
+    "status": "reference_only",
+    "official_rules": "https://github.com/unitaryfoundation/qldpc-challenge/blob/main/TRACKS.md",
+    "official_validator": "https://github.com/unitaryfoundation/qldpc-challenge/blob/main/verify/validate_candidate.py",
+    "workflow": "https://github.com/unitaryfoundation/qldpc-challenge/blob/main/research/AUTORESEARCH.md",
+    "max_check_weight": 32,
+    "paper_claims_are_not_local_proofs": true,
+    "literature_distance_claims_imported": false,
+    "submission_sent": false,
+    "board_claims_allowed": false,
+    "required_local_gates": [
+      "schema validation",
+      "GF(2) rank and k recomputation",
+      "CSS commutation",
+      "check-weight and locality derivation",
+      "explicit nontrivial logical witness",
+      "fresh-seed refutation search"
+    ]
+  },
+  "taxonomy": [
+    {"id": "qldpc", "parent": null, "kind": "root", "label": "quantum LDPC"},
+    {"id": "homological-products", "parent": "qldpc", "kind": "branch", "label": "homological/product constructions"},
+    {"id": "group-algebra-lifts", "parent": "homological-products", "kind": "branch", "label": "group-algebra and lifted products"},
+    {"id": "expander-tanner", "parent": "qldpc", "kind": "branch", "label": "expander and Tanner constructions"},
+    {"id": "topological-geometric", "parent": "qldpc", "kind": "branch", "label": "topological and geometric constructions"},
+    {"id": "permutation-regular", "parent": "qldpc", "kind": "branch", "label": "permutation and regular constructions"},
+    {"id": "search-discovery", "parent": "qldpc", "kind": "branch", "label": "search/discovery ansatz"}
+  ],
+  "families": [
+    {
+      "id": "hypergraph-product",
+      "parent": "homological-products",
+      "label": "hypergraph-product",
+      "challenge_family_tag": "hypergraph-product",
+      "construction": "CSS homological product of two classical parity-check complexes.",
+      "repo_fit": "partial",
+      "repo_gap": "Current constructor is a 1x2 group-algebra specialization; general 2x2 classical inputs are not yet represented.",
+      "search_priority": "high",
+      "primary_sources": [
+        {"title": "Quantum LDPC codes with positive rate and minimum distance proportional to n^1/2", "url": "https://www.math.u-bordeaux.fr/~gzemor/QLDPC.pdf"}
+      ],
+      "reference_instances": [],
+      "accelerator_route": "Add a native sparse 2x2 product builder; reuse packed CSS RIS and exact verifier gates."
+    },
+    {
+      "id": "quantum-expander",
+      "parent": "expander-tanner",
+      "label": "quantum expander",
+      "challenge_family_tag": "hypergraph-product",
+      "construction": "Hypergraph-product codes paired with an expansion-based linear-time decoder.",
+      "repo_fit": "partial",
+      "repo_gap": "No explicit expander graph/classical-code generator or decoder benchmark in this repo.",
+      "search_priority": "medium",
+      "primary_sources": [
+        {"title": "Quantum Expander Codes", "url": "https://arxiv.org/abs/1504.00822"}
+      ],
+      "reference_instances": [],
+      "accelerator_route": "Use the C++ packed kernel for candidate distance screens; add graph generation separately."
+    },
+    {
+      "id": "fiber-bundle",
+      "parent": "homological-products",
+      "label": "fiber-bundle",
+      "challenge_family_tag": "other",
+      "construction": "A generalized homological product in which a code is assembled as a fiber bundle.",
+      "repo_fit": "not_implemented",
+      "repo_gap": "Requires chain-complex and bundle data structures, not only group-algebra 1x2 pairs.",
+      "search_priority": "low",
+      "primary_sources": [
+        {"title": "Fiber Bundle Codes: Breaking the N^1/2 polylog(N) Barrier for Quantum LDPC Codes", "url": "https://arxiv.org/abs/2009.03921"}
+      ],
+      "reference_instances": [],
+      "accelerator_route": "Sparse matrix ingestion first; C++ distance kernels can operate after construction."
+    },
+    {
+      "id": "balanced-product",
+      "parent": "homological-products",
+      "label": "balanced-product",
+      "challenge_family_tag": "balanced-product",
+      "construction": "Amalgamation of classical codes and Ramanujan-graph structure through a balanced product.",
+      "repo_fit": "partial",
+      "repo_gap": "Current group-product constructor does not encode the graph/coset amalgamation rules.",
+      "search_priority": "high",
+      "primary_sources": [
+        {"title": "Balanced Product Quantum Codes", "url": "https://arxiv.org/abs/2012.09271"}
+      ],
+      "reference_instances": [],
+      "accelerator_route": "Keep graph construction in Python initially; hand packed H_X/H_Z to native CSS RIS."
+    },
+    {
+      "id": "lifted-product",
+      "parent": "group-algebra-lifts",
+      "label": "lifted-product",
+      "challenge_family_tag": "lifted-product",
+      "construction": "Lifted product of matrices over a group algebra; current repo searches a systematic 1x2 CSS slice.",
+      "repo_fit": "implemented_1x2",
+      "repo_gap": "Broader base matrices, non-regular actions, and paper-specific symmetry constraints are not yet covered.",
+      "search_priority": "highest",
+      "primary_sources": [
+        {"title": "Quantum LDPC Codes with Almost Linear Minimum Distance", "url": "https://arxiv.org/abs/2012.04068"}
+      ],
+      "reference_instances": [],
+      "accelerator_route": "Native batch systematic seeds plus native CSS RIS; exact native Tanner search for n <= 384."
+    },
+    {
+      "id": "generalized-bicycle",
+      "parent": "group-algebra-lifts",
+      "label": "generalized-bicycle",
+      "challenge_family_tag": "generalized-bicycle",
+      "construction": "Two polynomial/group-algebra blocks generalizing bicycle codes beyond a single cyclic group.",
+      "repo_fit": "implemented_1x2_slice",
+      "repo_gap": "Existing search does not yet include the full published GB parameter/catalog space.",
+      "search_priority": "high",
+      "primary_sources": [
+        {"title": "Degenerate Quantum LDPC Codes With Good Finite Length Performance", "url": "https://arxiv.org/abs/1904.02703"},
+        {"title": "Generalized bicycle quantum LDPC codes", "url": "https://arxiv.org/abs/2203.17216"}
+      ],
+      "reference_instances": [],
+      "accelerator_route": "Enumerate polynomial supports in the existing group engine; batch systematic screening in C++."
+    },
+    {
+      "id": "bivariate-bicycle",
+      "parent": "group-algebra-lifts",
+      "label": "bivariate-bicycle",
+      "challenge_family_tag": "bivariate-bicycle",
+      "construction": "Bicycle-style CSS codes over a product of two cyclic groups.",
+      "repo_fit": "not_implemented",
+      "repo_gap": "Needs two-dimensional cyclic polynomial representation and optional perturbed/non-CSS branch.",
+      "search_priority": "high",
+      "primary_sources": [
+        {"title": "High-threshold and low-overhead fault-tolerant quantum memory", "url": "https://arxiv.org/abs/2308.07915"},
+        {"title": "Evolutionary Discovery of Bivariate Bicycle Codes with LLM-Guided Search", "url": "https://arxiv.org/abs/2606.02418"}
+      ],
+      "reference_instances": ["[[144,12,12]]", "[[288,12,18]]", "[[360,12,<=24]]"],
+      "accelerator_route": "Implement torus-indexed supports, then reuse packed RIS; keep non-CSS out of CSS-only paths."
+    },
+    {
+      "id": "two-block-group-algebra",
+      "parent": "group-algebra-lifts",
+      "label": "two-block group algebra (2BGA)",
+      "challenge_family_tag": "2bga-coset",
+      "construction": "Smallest lifted-product codes over arbitrary finite groups, including non-abelian groups.",
+      "repo_fit": "near",
+      "repo_gap": "Full catalog and permutation-equivalence reduction are not imported; current search samples a narrower 1x2 form.",
+      "search_priority": "highest",
+      "primary_sources": [
+        {"title": "Quantum two-block group algebra codes", "url": "https://arxiv.org/abs/2306.16400"}
+      ],
+      "reference_instances": [],
+      "accelerator_route": "Use cached finite-group tables and native batch systematic generation; import catalog supports only after local validation."
+    },
+    {
+      "id": "coset-based-2bga",
+      "parent": "group-algebra-lifts",
+      "label": "coset-based two-block codes",
+      "challenge_family_tag": "2bga-coset",
+      "construction": "Two-block codes from group actions on cosets, extending regular 2BGA actions.",
+      "repo_fit": "not_implemented",
+      "repo_gap": "Requires coset-action permutation matrices rather than regular group multiplication tables.",
+      "search_priority": "highest",
+      "primary_sources": [
+        {"title": "Breaking the bicycle frame: Coset-based quantum LDPC codes", "url": "https://arxiv.org/abs/2606.17268"}
+      ],
+      "reference_instances": ["[[48,8,6]]", "[[96,8,10]]", "[[224,12,16]]", "[[84,16,8]]", "[[112,16,10]]", "[[128,16,12]]", "[[168,16,15]]"],
+      "accelerator_route": "Generalize qldpc_batch_systematic to arbitrary permutation actions; preserve verifier-derived weights."
+    },
+    {
+      "id": "quantum-tanner",
+      "parent": "expander-tanner",
+      "label": "quantum Tanner",
+      "challenge_family_tag": "quantum-tanner",
+      "construction": "Two compatible Tanner codes on a left-right Cayley complex.",
+      "repo_fit": "not_implemented",
+      "repo_gap": "Needs square-complex incidence and local-code constraints; group pair search is not equivalent.",
+      "search_priority": "highest",
+      "primary_sources": [
+        {"title": "Quantum Tanner codes", "url": "https://arxiv.org/abs/2202.13641"},
+        {"title": "Decoding quantum Tanner codes", "url": "https://arxiv.org/abs/2208.05537"},
+        {"title": "Small quantum Tanner codes from left-right Cayley complexes", "url": "https://arxiv.org/abs/2512.20532"}
+      ],
+      "reference_instances": ["[[144,12,11]]", "[[432,20,<=22]]", "[[576,28,<=24]]"],
+      "accelerator_route": "Add sparse square-complex builder and native syndrome/logical kernels; current RIS remains reusable."
+    },
+    {
+      "id": "kasai-apm",
+      "parent": "permutation-regular",
+      "label": "Kasai APM",
+      "challenge_family_tag": "other",
+      "construction": "Affine/permutation-matrix CSS constructions controlling active orthogonality and Tanner-graph girth.",
+      "repo_fit": "not_implemented",
+      "repo_gap": "Current engine assumes finite-group algebra supports, not arbitrary affine permutation matrices.",
+      "search_priority": "high",
+      "primary_sources": [
+        {"title": "Breaking the Orthogonality Barrier in Quantum LDPC Codes", "url": "https://arxiv.org/abs/2601.08824"},
+        {"title": "Heuristic Search for Minimum-Distance Upper-Bound Witnesses in Quantum APM-LDPC Codes", "url": "https://arxiv.org/abs/2604.15307"}
+      ],
+      "reference_instances": ["[[9216,4612,<=48]]"],
+      "accelerator_route": "Represent permutations as packed sparse row maps; C++ RIS can screen large matrices after construction."
+    },
+    {
+      "id": "kasai-affine-coset-cpm",
+      "parent": "permutation-regular",
+      "label": "affine-coset CPM lift",
+      "challenge_family_tag": "other",
+      "construction": "(3,8)-regular affine-coset base pair followed by CPM lifting.",
+      "repo_fit": "not_implemented",
+      "repo_gap": "Base permutation construction and large CPM lifts are outside current 1x2 group search.",
+      "search_priority": "medium",
+      "primary_sources": [
+        {"title": "High-Girth Regular Quantum LDPC Codes from Affine-Coset Structures", "url": "https://arxiv.org/abs/2604.20838"}
+      ],
+      "reference_instances": ["[[512,174,8]]", "[[16384,4142,<=32]]"],
+      "accelerator_route": "Use streaming sparse supports and native RIS; do not run exact search at these n."
+    },
+    {
+      "id": "gala",
+      "parent": "permutation-regular",
+      "label": "GALA",
+      "challenge_family_tag": "other",
+      "construction": "Group-Action Lifts with Active orthogonality over a small non-abelian factor and cyclic factor.",
+      "repo_fit": "partial",
+      "repo_gap": "Existing non-abelian group engine may cover only a narrow algebraic slice; GALA schedules/layouts are absent.",
+      "search_priority": "highest",
+      "primary_sources": [
+        {"title": "Designer Codes from GALA: Compact, Self-Dual, and Rate-1/2 QEC on Reconfigurable Atom Arrays", "url": "https://arxiv.org/abs/2608.07431"}
+      ],
+      "reference_instances": ["[[132,30,12]]", "[[672,336,12]]", "[[1752,880,14]]", "[[2232,1120,16]]"],
+      "accelerator_route": "Search GALA support templates with the native batch path; locality must be independently laid out and verified."
+    },
+    {
+      "id": "mitten",
+      "parent": "group-algebra-lifts",
+      "label": "mitten",
+      "challenge_family_tag": "lifted-product",
+      "construction": "Non-abelian lifted-product processor codes at design rate 1/5 and check weight 9.",
+      "repo_fit": "near",
+      "repo_gap": "Paper-specific group/support catalogs and processor layouts are not yet imported.",
+      "search_priority": "highest",
+      "primary_sources": [
+        {"title": "High-rate qLDPC processors", "url": "https://arxiv.org/abs/2607.28795"}
+      ],
+      "reference_instances": ["[[150,30,10]]", "[[200,40,12]]", "[[300,60,14]]", "[[500,100,16]]", "[[540,108,18]]", "[[630,126,<=20]]"],
+      "accelerator_route": "Directly compatible with 1x2 non-abelian support enumeration; prioritize n=300/500/540 and fresh-seed confirmation."
+    },
+    {
+      "id": "zsz-lp",
+      "parent": "group-algebra-lifts",
+      "label": "ZSZ-LP",
+      "challenge_family_tag": "lifted-product",
+      "construction": "Balanced products of rate-1/2 classical LDPC codes sharing non-abelian semidirect-product symmetry.",
+      "repo_fit": "near",
+      "repo_gap": "Current search does not encode the shared-classical-code design constraints or published instance table.",
+      "search_priority": "highest",
+      "primary_sources": [
+        {"title": "Quantum LDPC codes with design rate 1/5 and good performance below 1000 physical qubits", "url": "https://arxiv.org/abs/2607.27644"}
+      ],
+      "reference_instances": ["[[60,12,6]]", "[[150,30,10]]", "[[320,64,14]]", "[[700,140,22]]"],
+      "accelerator_route": "Add semidirect support templates, then use native systematic batches and CSS RIS."
+    },
+    {
+      "id": "tile-planar",
+      "parent": "topological-geometric",
+      "label": "tile/planar",
+      "challenge_family_tag": "tile",
+      "construction": "Planar or directional tile-code constructions with explicit geometric layouts.",
+      "repo_fit": "not_implemented",
+      "repo_gap": "Current candidates are unrestricted algebraic codes; no boundary/layout generator.",
+      "search_priority": "medium",
+      "primary_sources": [
+        {"title": "Published weight-8 tile-code reference", "url": "https://arxiv.org/abs/2504.09171"},
+        {"title": "Planar weight-8 qLDPC reference", "url": "https://arxiv.org/abs/2504.08887"},
+        {"title": "Strictly nearest-neighbour directional-tile reference", "url": "https://arxiv.org/abs/2606.19482"}
+      ],
+      "reference_instances": ["[[512,18,19]]", "[[282,12,14]]", "[[323,14,15]]"],
+      "accelerator_route": "Import machine-readable supports where available; locality is a separate official-validator gate."
+    },
+    {
+      "id": "twisted-torus",
+      "parent": "topological-geometric",
+      "label": "twisted-torus/generalized-toric",
+      "challenge_family_tag": "topological",
+      "construction": "Generalized toric/bicycle constructions on twisted tori.",
+      "repo_fit": "not_implemented",
+      "repo_gap": "Requires geometric boundary/twist representation rather than only group support pairs.",
+      "search_priority": "medium",
+      "primary_sources": [
+        {"title": "Generalized toric codes on twisted tori for quantum error correction", "url": "https://arxiv.org/abs/2503.03827"}
+      ],
+      "reference_instances": [],
+      "accelerator_route": "Convert layouts to sparse supports, then use native verification/refutation only."
+    },
+    {
+      "id": "llm-evolutionary-bb",
+      "parent": "search-discovery",
+      "label": "LLM-evolved BB/PBB ansatz",
+      "challenge_family_tag": "bivariate-bicycle",
+      "construction": "Evolutionary program mutation over bivariate-bicycle and perturbed bivariate-bicycle ansätze.",
+      "repo_fit": "method_transfer",
+      "repo_gap": "The repo has phylogenetic mutation but not program-grammar mutation or independent MILP/BLISS equivalence gates.",
+      "search_priority": "high",
+      "primary_sources": [
+        {"title": "Evolutionary Discovery of Bivariate Bicycle Codes with LLM-Guided Search", "url": "https://arxiv.org/abs/2606.02418"}
+      ],
+      "reference_instances": ["[[288,16,12]]", "[[360,12,<=24]]"],
+      "accelerator_route": "Transfer staged search/evidence policy; use C++ only for matrix/RIS hot paths, not as an independent proof."
+    },
+    {
+      "id": "golden",
+      "parent": "topological-geometric",
+      "label": "golden/hyperbolic",
+      "challenge_family_tag": "other",
+      "construction": "Homological codes from regular tessellations of hyperbolic 4-manifolds.",
+      "repo_fit": "not_implemented",
+      "repo_gap": "No manifold/tessellation input layer; likely outside current finite-group target regime.",
+      "search_priority": "low",
+      "primary_sources": [
+        {"title": "Golden codes: quantum LDPC codes built from regular tessellations of hyperbolic 4-manifolds", "url": "https://arxiv.org/abs/1712.08578"}
+      ],
+      "reference_instances": [],
+      "accelerator_route": "Treat as a future sparse-matrix import family, not a current search branch."
+    },
+    {
+      "id": "divisor-driven-bicycle",
+      "parent": "group-algebra-lifts",
+      "label": "divisor-driven bicycle",
+      "challenge_family_tag": "generalized-bicycle",
+      "construction": "Bicycle supports selected from divisor/factor structure of cyclic or small-group actions.",
+      "repo_fit": "partial",
+      "repo_gap": "Current random support sampler ignores divisor structure and small-group census constraints.",
+      "search_priority": "highest",
+      "primary_sources": [
+        {"title": "Quantum Bicycle LDPC Codes with High kd^2/n from Divisor-Driven Search", "url": "https://arxiv.org/abs/2608.09115"}
+      ],
+      "reference_instances": ["[[42,12,4]]", "[[62,12,4]]", "[[66,20,7]]", "[[48,10,6]]", "[[90,20,6]]"],
+      "accelerator_route": "Add divisor-aware cyclic support proposals; reuse native CSS RIS and official witness gates."
+    },
+    {
+      "id": "coset-cover-2bga",
+      "parent": "group-algebra-lifts",
+      "label": "coset-action and graph-cover 2BGA",
+      "challenge_family_tag": "2bga-coset",
+      "construction": "Two-block CSS codes from non-regular coset actions and graph covers of 2BGA bases.",
+      "repo_fit": "not_implemented",
+      "repo_gap": "Current regular representation cannot enumerate subgroup coset actions or cover lifts.",
+      "search_priority": "highest",
+      "primary_sources": [
+        {"title": "Breaking the bicycle frame: Coset-based quantum LDPC codes", "url": "https://arxiv.org/abs/2606.17268"}
+      ],
+      "reference_instances": ["[[48,8,6]]", "[[96,8,10]]", "[[224,12,16]]", "[[168,16,15]]"],
+      "accelerator_route": "Implement sparse commuting permutation actions; feed generated H_X/H_Z into native RIS."
+    },
+    {
+      "id": "structured-concept-evolution",
+      "parent": "search-discovery",
+      "label": "structured concept evolution",
+      "challenge_family_tag": "lifted-product",
+      "construction": "Hierarchical mutations over executable algebraic concepts: supports, protographs, groups, and base spaces.",
+      "repo_fit": "method_transfer",
+      "repo_gap": "Current phylogeny mutates supports only; no typed protograph/group mutation grammar or branch archive.",
+      "search_priority": "highest",
+      "primary_sources": [
+        {"title": "Large-Language-Model Discovery of Quantum LDPC Codes through Structured Concept Evolution", "url": "https://arxiv.org/abs/2606.24808"}
+      ],
+      "reference_instances": ["[[144,12,12]]", "[[288,16,12]]", "[[360,12,<=24]]"],
+      "accelerator_route": "Add typed branch mutations and novelty archive; keep validation independent from model score."
+    }
+  ]
+}
